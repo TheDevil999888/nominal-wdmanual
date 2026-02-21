@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    :root {
+      --primary: #FFD700;
+      /* Gold */
+      --secondary: #D40028;
+      /* Strong Red */
+      --bg-dark: #0a0a0a;
+      --glass: rgba(20, 20, 20, 0.8);
+      --border-color: rgba(255, 215, 0, 0.3);
+      --cursor-x: 50%;
+      --cursor-y: 50%;
+    }
+
+    body {
+      margin: 0;
+      width: 420px;
+      background-color: var(--bg-dark);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow-x: hidden;
+      /* Chinese pattern overlay */
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(212, 0, 40, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 90% 80%, rgba(255, 215, 0, 0.05) 0%, transparent 20%);
+    }
+
+    /* Cursor Follow Effect */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at var(--cursor-x) var(--cursor-y), rgba(255, 215, 0, 0.08), transparent 150px);
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    .container {
+      padding: 15px;
+      border: 1px solid var(--border-color);
+      margin: 10px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
+      position: relative;
+    }
+
+    /* Technical Corners */
+    .container::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(to right, var(--primary) 2px, transparent 2px) 0 0,
+        linear-gradient(to bottom, var(--primary) 2px, transparent 2px) 0 0,
+        linear-gradient(to left, var(--primary) 2px, transparent 2px) 100% 100%,
+        linear-gradient(to top, var(--primary) 2px, transparent 2px) 100% 100%;
+      background-size: 10px 10px;
+      background-repeat: no-repeat;
+      pointer-events: none;
+    }
+
+    /* Header & Live Logo */
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .logo-container {
+      position: relative;
+      width: 120px;
+      height: 60px;
+      margin: 0 auto 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .logo-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 8px var(--primary));
+      animation: hoverFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes hoverFloat {
+
+      0%,
+      100% {
+        transform: translateY(0);
+        filter: drop-shadow(0 0 8px var(--primary));
+      }
+
+      50% {
+        transform: translateY(-3px);
+        filter: drop-shadow(0 0 15px var(--primary));
+      }
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0;
+      letter-spacing: 2px;
+      color: #FFD700;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-shadow:
+        0 0 5px #FFD700,
+        0 0 10px #FF4500,
+        2px 2px 0px rgba(0, 0, 0, 0.5);
+      /* 3D depth */
+      position: relative;
+      display: inline-block;
+    }
+
+    /* Glitch/Scan Effect Overlay */
+    h1::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      color: #fff;
+      opacity: 0.1;
+      overflow: hidden;
+      animation: scan 3s linear infinite;
+    }
+
+    @keyframes scan {
+      0% {
+        clip-path: polygon(0 0, 100% 0, 100% 5%, 0 5%);
+      }
+
+      100% {
+        clip-path: polygon(0 95%, 100% 95%, 100% 100%, 0 100%);
+      }
+    }
+
+    .sub-title {
+      font-family: 'Consolas', 'Monaco', monospace;
+      font-size: 11px;
+      color: #00FFFF;
+      letter-spacing: 4px;
+      margin-top: 6px;
+      text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+      opacity: 0.9;
+    }
+
+    /* Toggle Button */
+    #toggleBtn {
+      width: 100%;
+      padding: 12px;
+      background: #111;
+      border: 1px solid #333;
+      color: #555;
+      font-weight: bold;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
+    #toggleBtn.active {
+      background: linear-gradient(90deg, rgba(0, 0, 0, 1) 0%, rgba(20, 20, 20, 1) 100%);
+      color: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+
+    #toggleBtn.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--primary);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0 5px;
+    }
+
+    th {
+      font-size: 11px;
+      color: cyan;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 5px;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+      letter-spacing: 1px;
+    }
+
+    td {
+      padding: 5px;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid transparent;
+      transition: all 0.3s;
+    }
+
+    tr:hover td {
+      border-top: 1px solid var(--secondary);
+      border-bottom: 1px solid var(--secondary);
+      background: rgba(212, 0, 40, 0.1);
+      box-shadow: inset 0 0 10px rgba(212, 0, 40, 0.2);
+    }
+
+    /* Inputs */
+    input[type="text"] {
+      width: 90%;
+      background: transparent;
+      border: 1px solid #444;
+      color: #fff;
+      padding: 5px;
+      text-align: center;
+      font-family: inherit;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--primary);
+      outline: none;
+      box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+
+    input[type="color"] {
+      background: none;
+      border: none;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+    }
+
+    /* Apply Button */
+    #apply {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      background: linear-gradient(45deg, #8B0000, #D40028);
+      border: none;
+      color: white;
+      text-transform: uppercase;
+      font-weight: bold;
+      letter-spacing: 2px;
+      cursor: pointer;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      transition: transform 0.2s, filter 0.2s;
+    }
+
+    #apply:hover {
+      filter: brightness(1.2);
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(212, 0, 40, 0.6);
+    }
+
+    /* Animations */
+    @keyframes pulse {
+      0% {
+        text-shadow: 0 0 5px var(--primary);
+      }
+
+      50% {
+        text-shadow: 0 0 15px var(--primary), 0 0 25px var(--secondary);
+      }
+
+      100% {
+        text-shadow: 0 0 5px var(--primary);
+      }
+    }
+
+    .live-text {
+      animation: pulse 3s infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="header">
+      <!-- Refined Logo based on Image -->
+      <div class="logo-container">
+        <svg class="logo-svg" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Central Glowing Core -->
+          <circle cx="60" cy="20" r="4" fill="#FFD700" stroke="#FF4500" stroke-width="1" />
+
+          <!-- Curved Wings -->
+          <path d="M20 15 Q 60 40 100 15" stroke="#FFD700" stroke-width="3" stroke-linecap="round" fill="none" />
+
+          <!-- Downward Beams/Legs -->
+          <path d="M60 25 L 45 50" stroke="#FFD700" stroke-width="1.5" stroke-opacity="0.8">
+            <animate attributeName="stroke-opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite" />
+          </path>
+          <path d="M60 25 L 75 50" stroke="#FFD700" stroke-width="1.5" stroke-opacity="0.8">
+            <animate attributeName="stroke-opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite" begin="1s" />
+          </path>
+          <path d="M60 25 L 60 55" stroke="#FF4500" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </div>
+
+      <h1 data-text="CHINESE NEW YEAR">CHINESE NEW YEAR</h1>
+      <div class="sub-title">2026 // SYSTEM V7.0</div>
+    </div>
+
+    <button id="toggleBtn">SYSTEM OFF</button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>MIN</th>
+          <th>MAX</th>
+          <th>BG</th>
+          <th>TEXT</th>
+        </tr>
+      </thead>
+      <tbody id="rangeTable">
+        <!-- Rows injected by JS -->
+      </tbody>
+    </table>
+
+    <button id="apply">INITIALIZE</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+
+</html>
